@@ -2,7 +2,7 @@
   "name": "psv360",
   "type": "module",
   "private": true,
-  "packageManager": "pnpm@11.5.1",
+  "packageManager": "pnpm@11.8.0",
   "scripts": {
     "build": "NUXT_PUBLIC_PROMETHEUS_VERBOSE=false nuxt build",
     "dev": "nuxt dev",
@@ -13,6 +13,7 @@
     "lint:fix": "eslint . --fix",
     "typecheck": "nuxt typecheck",
     "generate:config": "node --experimental-strip-types scripts/generate-config.ts",
+    "format": "prettier --write --list-different .",
     "prepare": "husky"
   },
   "dependencies": {
@@ -28,12 +29,13 @@
     "@iconify-json/heroicons": "1.2.3",
     "@nuxt/eslint": "1.16.0",
     "@types/node": "22.19.21",
+    "eslint": "10.5.0",
     "husky": "9.1.7",
     "lint-staged": "17.0.7",
     "prettier": "3.8.4",
     "typescript": "6.0.3"
   },
   "lint-staged": {
-    "*.{js,ts,vue}": "eslint --fix"
+    "*.{js,ts,vue}": "pnpm lint:fix"
   }
 }

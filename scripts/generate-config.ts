@@ -1,4 +1,5 @@
 #!/usr/bin/env node --experimental-strip-types
+/* eslint-disable no-console */
 /**
  * Scans PANO_DIR for panorama directories (any directory containing a .jpg),
  * then creates or updates config.json with skeleton entries for any new scenes.
@@ -8,16 +9,17 @@
  * a missing `date` field is the only value backfilled on existing scenes.
  */
 
-import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
-import { join, relative, sep } from 'node:path'
-import type { PanoConfig, Scene } from '../shared/types/index.ts'
+import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs"
+import { join, relative, sep } from "node:path"
+import type { PanoConfig, Scene } from "../shared/types/index.ts"
 
-const PANO_DIR = process.env.PANO_DIR ?? './data'
-const CONFIG_PATH = join(PANO_DIR, 'config.json')
+const PANO_DIR = process.env.PANO_DIR ?? "./data"
+const CONFIG_PATH = join(PANO_DIR, "config.json")
 
 function findPanoDirs(dir: string, results: string[] = []): string[] {
   const entries = readdirSync(dir, { withFileTypes: true })
-  if (entries.some((e) => e.isFile() && /\.(jpg|jpeg)$/i.test(e.name))) results.push(dir)
+  if (entries.some((e) => e.isFile() && /\.(jpg|jpeg)$/i.test(e.name)))
+    results.push(dir)
   for (const entry of entries) {
     if (entry.isDirectory()) findPanoDirs(join(dir, entry.name), results)
   }
@@ -25,7 +27,7 @@ function findPanoDirs(dir: string, results: string[] = []): string[] {
 }
 
 function makeId(panoDir: string): string {
-  return relative(PANO_DIR, panoDir).split(sep).join('-')
+  return relative(PANO_DIR, panoDir).split(sep).join("-")
 }
 
 function makeName(panoDir: string): string {
@@ -38,7 +40,12 @@ function findJpg(dir: string): string | undefined {
 
 function extractDate(panoDir: string): string | undefined {
   const parts = relative(PANO_DIR, panoDir).split(sep)
-  if (parts.length >= 3 && /^\d{4}$/.test(parts[0]) && /^\d{2}$/.test(parts[1]) && /^\d{2}$/.test(parts[2])) {
+  if (
+    parts.length >= 3 &&
+    /^\d{4}$/.test(parts[0]) &&
+    /^\d{2}$/.test(parts[1]) &&
+    /^\d{2}$/.test(parts[2])
+  ) {
     return `${parts[0]}-${parts[1]}-${parts[2]}`
   }
   return undefined
@@ -46,7 +53,7 @@ function extractDate(panoDir: string): string | undefined {
 
 function loadConfig(): PanoConfig {
   if (existsSync(CONFIG_PATH)) {
-    return JSON.parse(readFileSync(CONFIG_PATH, 'utf-8')) as PanoConfig
+    return JSON.parse(readFileSync(CONFIG_PATH, "utf-8")) as PanoConfig
   }
   return { scenes: [] }
 }
@@ -76,15 +83,26 @@ for (const dir of findPanoDirs(PANO_DIR)) {
     continue
   }
 
-  const imagePath = relative(PANO_DIR, join(dir, jpg)).split(sep).join('/')
-  const scene: Scene = { id, name: makeName(dir), image: imagePath, ...(date && { date }), hotspots: [] }
+  const imagePath = relative(PANO_DIR, join(dir, jpg)).split(sep).join("/")
+  const scene: Scene = {
+    id,
+    name: makeName(dir),
+    image: imagePath,
+    ...(date && { date }),
+    hotspots: [],
+  }
 
   config.scenes.push(scene)
-  console.log(`Added: ${id}  (${imagePath}${date ? `, ${date}` : ''})`)
+  console.log(`Added: ${id}  (${imagePath}${date ? `, ${date}` : ""})`)
   added++
 }
 
-writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2) + '\n')
+writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2) + "\n")
 
-const changes = [added && `+${added} added`, updated && `+${updated} date backfilled`].filter(Boolean).join(', ')
-console.log(changes ? `\nWrote ${CONFIG_PATH} (${changes})` : 'No changes.')
+const changes = [
+  added && `+${added} added`,
+  updated && `+${updated} date backfilled`,
+]
+  .filter(Boolean)
+  .join(", ")
+console.log(changes ? `\nWrote ${CONFIG_PATH} (${changes})` : "No changes.")

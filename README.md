@@ -98,18 +98,18 @@ Running `pnpm generate:config` after adding new panoramas will append skeleton e
 }
 ```
 
-| Field | Type | Description |
-|---|---|---|
-| `id` | string | URL slug (auto-generated) — used in `/pano/<id>` and `/embed/<id>` |
-| `name` | string | Display name — edit this from the auto-generated leaf-directory name |
-| `image` | string | Path relative to `PANO_DIR` (auto-generated) |
-| `date` | string? | `YYYY-MM-DD` — auto-extracted from path; used for ordering and display |
-| `thumbnail` | string? | Path relative to `PANO_DIR` for preview image; add manually |
-| `defaultPosition` | object? | Initial yaw/pitch (radians) when entering this scene; see [Coordinate picker](#coordinate-picker) |
-| `hotspots[].targetId` | string | `id` of the destination scene |
-| `hotspots[].yaw` | number | Horizontal angle in radians where the hotspot appears |
-| `hotspots[].pitch` | number | Vertical angle in radians |
-| `hotspots[].label` | string? | Tooltip label |
+| Field                 | Type    | Description                                                                                       |
+| --------------------- | ------- | ------------------------------------------------------------------------------------------------- |
+| `id`                  | string  | URL slug (auto-generated) — used in `/pano/<id>` and `/embed/<id>`                                |
+| `name`                | string  | Display name — edit this from the auto-generated leaf-directory name                              |
+| `image`               | string  | Path relative to `PANO_DIR` (auto-generated)                                                      |
+| `date`                | string? | `YYYY-MM-DD` — auto-extracted from path; used for ordering and display                            |
+| `thumbnail`           | string? | Path relative to `PANO_DIR` for preview image; add manually                                       |
+| `defaultPosition`     | object? | Initial yaw/pitch (radians) when entering this scene; see [Coordinate picker](#coordinate-picker) |
+| `hotspots[].targetId` | string  | `id` of the destination scene                                                                     |
+| `hotspots[].yaw`      | number  | Horizontal angle in radians where the hotspot appears                                             |
+| `hotspots[].pitch`    | number  | Vertical angle in radians                                                                         |
+| `hotspots[].label`    | string? | Tooltip label                                                                                     |
 
 All angles are in **radians**.
 
@@ -147,15 +147,20 @@ Use `/thumb/<id>` as the image source — it returns the scene's thumbnail (or f
 `/embed/<id>` returns an HTML page with a static preview image that links to the viewer. Use this for iframes only — it cannot be used as an `<img src>`:
 
 ```html
-<iframe src="https://your-host/embed/2024-06-15-garden" width="800" height="450" frameborder="0"></iframe>
+<iframe
+  src="https://your-host/embed/2024-06-15-garden"
+  width="800"
+  height="450"
+  frameborder="0"
+></iframe>
 ```
 
 ## Deployment
 
 The app expects one environment variable:
 
-| Variable | Default | Description |
-|---|---|---|
+| Variable   | Default  | Description                                                        |
+| ---------- | -------- | ------------------------------------------------------------------ |
 | `PANO_DIR` | `./data` | Absolute path to the directory containing images and `config.json` |
 
 Mount your image volume at a stable path inside the container and set `PANO_DIR` to that path. The app serves images through `/api/image/<path>` — no static file server or CDN required, though adding one in front is straightforward.

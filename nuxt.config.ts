@@ -1,22 +1,22 @@
 export default defineNuxtConfig({
-  compatibilityDate: '2025-07-15',
+  compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
 
-  modules: ['@nuxt/ui', '@nuxt/eslint', '@artmizu/nuxt-prometheus'],
+  modules: ["@nuxt/ui", "@nuxt/eslint", "@artmizu/nuxt-prometheus"],
 
-  css: ['~/assets/css/main.css'],
+  css: ["~/assets/css/main.css"],
 
   colorMode: {
-    preference: 'dark',
-    fallback: 'dark',
-    storageKey: 'nuxt-color-mode',
+    preference: "dark",
+    fallback: "dark",
+    storageKey: "nuxt-color-mode",
   },
 
   vite: {
     optimizeDeps: {
       include: [
-        '@photo-sphere-viewer/core',
-        '@photo-sphere-viewer/virtual-tour-plugin',
+        "@photo-sphere-viewer/core",
+        "@photo-sphere-viewer/virtual-tour-plugin",
       ],
     },
   },
@@ -24,12 +24,12 @@ export default defineNuxtConfig({
   typescript: {
     tsConfig: {
       compilerOptions: {
-        types: ['node'],
+        types: ["node"],
       },
     },
   },
 
   runtimeConfig: {
-    panoDir: process.env.PANO_DIR ?? './data',
+    panoDir: process.env.PANO_DIR ?? "./data",
   },
 })
