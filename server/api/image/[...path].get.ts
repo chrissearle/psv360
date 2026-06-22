@@ -17,8 +17,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, message: 'Invalid path' })
   }
 
-  const config = useRuntimeConfig()
-  const root = resolve(config.panoDir)
+  const root = resolve(process.env.PANO_DIR ?? useRuntimeConfig().panoDir)
   const filepath = resolve(root, imagePath)
 
   // Prevent path traversal — resolved path must stay inside PANO_DIR

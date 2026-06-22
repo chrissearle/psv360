@@ -6,10 +6,11 @@ let cached: PanoConfig | null = null
 let cachedMtime = 0
 
 export async function loadPanoConfig(): Promise<PanoConfig> {
-  const config = useRuntimeConfig()
-  const configPath = join(config.panoDir, 'config.json')
+  const panoDir = process.env.PANO_DIR ?? useRuntimeConfig().panoDir
+  const configPath = join(panoDir, 'config.json')
 
-  const fileStat = await stat(configPath).catch(() => {
+  const fileStat = await stat(configPath).catch((e) => {
+    console.error(`[panoConfig] stat failed for ${configPath}:`, e)
     throw createError({
       statusCode: 500,
       message: `Could not read pano config from ${configPath}. Set PANO_DIR and ensure config.json exists.`,
@@ -18,7 +19,8 @@ export async function loadPanoConfig(): Promise<PanoConfig> {
 
   if (cached && fileStat.mtimeMs === cachedMtime) return cached
 
-  const raw = await readFile(configPath, 'utf-8').catch(() => {
+  const raw = await readFile(configPath, 'utf-8').catch((e) => {
+    console.error(`[panoConfig] readFile failed for ${configPath}:`, e)
     throw createError({
       statusCode: 500,
       message: `Could not read pano config from ${configPath}. Set PANO_DIR and ensure config.json exists.`,
