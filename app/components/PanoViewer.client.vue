@@ -70,10 +70,10 @@ onMounted(() => {
 
       const virtualTour = viewer.getPlugin(VirtualTourPlugin)
       virtualTour.addEventListener(vtEvents.NodeChangedEvent.type, (e) => {
-        if (!e.data.fromNode) {
-          const pos = defaultPositions.get(e.node.id)
-          if (pos) viewer?.rotate(pos)
-        } else {
+        const pos = defaultPositions.get(e.node.id)
+        if (pos) viewer?.rotate(pos)
+
+        if (e.data.fromNode) {
           history.pushState(null, '', `/pano/${e.node.id}`)
           const name = e.node.name ?? e.node.id
           panoTitle.value = name
