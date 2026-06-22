@@ -1,0 +1,37 @@
+{
+  "name": "psv360",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "typecheck": "nuxt typecheck",
+    "generate:config": "node --experimental-strip-types scripts/generate-config.ts",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "@nuxt/ui": "4.9.0",
+    "@photo-sphere-viewer/core": "5.14.1",
+    "@photo-sphere-viewer/virtual-tour-plugin": "5.14.1",
+    "nuxt": "4.4.8",
+    "vue": "3.5.38",
+    "vue-router": "5.1.0"
+  },
+  "devDependencies": {
+    "@iconify-json/heroicons": "1.2.3",
+    "@nuxt/eslint": "1.16.0",
+    "@types/node": "22.19.21",
+    "husky": "9.1.7",
+    "lint-staged": "17.0.7",
+    "prettier": "3.8.4",
+    "typescript": "6.0.3"
+  },
+  "lint-staged": {
+    "*.{js,ts,vue}": "eslint --fix"
+  }
+}
