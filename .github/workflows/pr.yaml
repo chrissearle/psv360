@@ -1,0 +1,38 @@
+name: PR Check
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup mise
+        uses: jdx/mise-action@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Build
+        run: pnpm build
+        env:
+          NUXT_PUBLIC_PROMETHEUS_VERBOSE: false
