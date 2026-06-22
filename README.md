@@ -6,8 +6,9 @@ A self-hosted 360° panorama viewer built with [Nuxt 4](https://nuxt.com) and [P
 
 - **Gallery** — entry page lists all available panoramas, newest first
 - **Viewer** — full-screen 360° viewer with hotspot navigation between scenes
-- **Deep links** — `/pano/<id>` links directly to any scene
+- **Deep links** — `/pano/<id>` links directly to any scene; the address bar and page title update as you navigate between scenes via hotspots, so every scene stays bookmarkable and shareable
 - **Embeds** — `/embed/<id>` returns a static preview image that links to the full viewer, suitable for use in `<iframe>` or as a plain `<a><img></a>` on an external site
+- **Metrics** — Prometheus metrics exposed at `/metrics`
 
 ## Setup
 
@@ -64,7 +65,7 @@ Running `pnpm generate:config` after adding new panoramas will append skeleton e
 
 ## Config format
 
-`config.json` lives at the root of `PANO_DIR` and is created/updated by `pnpm generate:config`. Edit `name`, `thumbnail`, and `hotspots` by hand.
+`config.json` lives at the root of `PANO_DIR` and is created/updated by `pnpm generate:config`. Edit `name`, `thumbnail`, `defaultPosition`, and `hotspots` by hand.
 
 ```json
 {
@@ -75,6 +76,7 @@ Running `pnpm generate:config` after adding new panoramas will append skeleton e
       "image": "2024/06/15/garden/Panorama.jpg",
       "date": "2024-06-15",
       "thumbnail": "2024/06/15/garden/thumbnail.jpg",
+      "defaultPosition": { "yaw": 1.5708, "pitch": -0.1 },
       "hotspots": [
         {
           "id": "to-terrace",
@@ -103,10 +105,30 @@ Running `pnpm generate:config` after adding new panoramas will append skeleton e
 | `image` | string | Path relative to `PANO_DIR` (auto-generated) |
 | `date` | string? | `YYYY-MM-DD` — auto-extracted from path; used for ordering and display |
 | `thumbnail` | string? | Path relative to `PANO_DIR` for preview image; add manually |
+| `defaultPosition` | object? | Initial yaw/pitch (radians) when entering this scene; see [Coordinate picker](#coordinate-picker) |
 | `hotspots[].targetId` | string | `id` of the destination scene |
 | `hotspots[].yaw` | number | Horizontal angle in radians where the hotspot appears |
 | `hotspots[].pitch` | number | Vertical angle in radians |
 | `hotspots[].label` | string? | Tooltip label |
+
+All angles are in **radians**.
+
+## Coordinate picker
+
+Finding the right yaw/pitch values for `defaultPosition` and hotspot positions requires looking at the panorama itself. The viewer includes a built-in authoring overlay that is **only shown in development mode** (`pnpm dev`) — it is compiled away entirely in production builds.
+
+Open any scene in the viewer:
+
+```
+http://localhost:3000/pano/<id>
+```
+
+The overlay (top-right corner) shows:
+
+- **Current view** — updates live as you look around. Use these values as `defaultPosition` for the scene.
+- **Last click** — records the yaw/pitch of the last point you clicked on the sphere. Use these values as the `yaw`/`pitch` for a hotspot.
+
+Both are shown pre-formatted ready to paste into `config.json`.
 
 ## Embedding
 
@@ -132,7 +154,9 @@ The app expects one environment variable:
 |---|---|---|
 | `PANO_DIR` | `./data` | Absolute path to the directory containing images and `config.json` |
 
-Mount your image volume at a stable path inside the container and set `PANO_DIR` to that path. The app serves images through `/api/image/<filename>` — no static file server or CDN required, though adding one in front is straightforward.
+Mount your image volume at a stable path inside the container and set `PANO_DIR` to that path. The app serves images through `/api/image/<path>` — no static file server or CDN required, though adding one in front is straightforward.
+
+Prometheus metrics are available at `/metrics` with no authentication.
 
 ## Commands
 
