@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import type { Scene } from '~~/shared/types'
+import type { Scene } from "~~/shared/types"
 
 const route = useRoute()
 const id = route.params.id as string
 
 const [{ data: scene, error }, { data: allScenes }] = await Promise.all([
   useFetch<Scene>(`/api/scenes/${id}`),
-  useFetch<Scene[]>('/api/scenes'),
+  useFetch<Scene[]>("/api/scenes"),
 ])
 
 if (error.value) {
   throw createError({ statusCode: 404, message: `Scene not found: ${id}` })
 }
 
-useHead(() => ({ title: scene.value ? `${scene.value.name} — 360°` : '360°' }))
+useHead(() => ({ title: scene.value ? `${scene.value.name} — 360°` : "360°" }))
 
-const panoTitle = useState<string | null>('pano-title', () => null)
+const panoTitle = useState<string | null>("pano-title", () => null)
 panoTitle.value = scene.value?.name ?? null
 </script>
 

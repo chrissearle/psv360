@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { Scene } from '~~/shared/types'
+import type { Scene } from "~~/shared/types"
 
-const { data: scenes, error } = await useFetch<Scene[]>('/api/scenes')
+const { data: scenes, error } = await useFetch<Scene[]>("/api/scenes")
 
 const sorted = computed<Scene[]>(() => {
   if (!scenes.value) return []
@@ -13,7 +13,7 @@ const sorted = computed<Scene[]>(() => {
   })
 })
 
-useHead({ title: '360° Panoramas' })
+useHead({ title: "360° Panoramas" })
 </script>
 
 <template>
@@ -33,10 +33,7 @@ useHead({ title: '360° Panoramas' })
         No panoramas found. Add images and a config.json to your pano directory.
       </p>
 
-      <div
-        v-else
-        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-      >
+      <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <SceneCard v-for="scene in sorted" :key="scene.id" :scene="scene" />
       </div>
     </template>

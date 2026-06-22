@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Scene } from '~~/shared/types'
+import type { Scene } from "~~/shared/types"
 
 const route = useRoute()
 const id = route.params.id as string
@@ -11,7 +11,7 @@ if (error.value) {
 }
 
 useHead(() => ({
-  title: scene.value?.name ?? '360° Panorama',
+  title: scene.value?.name ?? "360° Panorama",
 }))
 
 definePageMeta({ layout: false })
@@ -28,7 +28,7 @@ definePageMeta({ layout: false })
           :src="`/api/image/${encodeURI(scene.thumbnail)}`"
           :alt="scene.name"
           class="w-full h-full object-cover"
-        >
+        />
         <div
           v-else
           class="w-full h-full flex items-center justify-center bg-neutral-800 text-neutral-500"
@@ -42,12 +42,17 @@ definePageMeta({ layout: false })
           <span
             class="bg-white/10 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2"
           >
-            <UIcon name="i-heroicons-arrow-top-right-on-square" class="w-4 h-4" />
+            <UIcon
+              name="i-heroicons-arrow-top-right-on-square"
+              class="w-4 h-4"
+            />
             View in 360°
           </span>
         </div>
 
-        <div class="absolute bottom-2 left-3 text-white text-sm font-medium drop-shadow">
+        <div
+          class="absolute bottom-2 left-3 text-white text-sm font-medium drop-shadow"
+        >
           {{ scene.name }}
         </div>
       </NuxtLink>

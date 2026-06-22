@@ -1,16 +1,18 @@
 <script setup lang="ts">
-import type { Scene } from '~~/shared/types'
+import type { Scene } from "~~/shared/types"
 
 const props = defineProps<{ scene: Scene }>()
 
 const formattedDate = computed(() => {
   if (!props.scene.date) return null
-  const parts = props.scene.date.split('-').map(Number)
+  const parts = props.scene.date.split("-").map(Number)
   const [y, m, d] = parts
   if (y === undefined || m === undefined || d === undefined) return null
-  return new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }).format(
-    new Date(y, m - 1, d),
-  )
+  return new Intl.DateTimeFormat("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).format(new Date(y, m - 1, d))
 })
 </script>
 
@@ -25,16 +27,20 @@ const formattedDate = computed(() => {
             :src="`/api/image/${encodeURI(scene.thumbnail ?? scene.image)}`"
             :alt="scene.name"
             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-          >
+          />
         </div>
       </template>
 
       <div class="pt-2">
-        <h2 class="font-medium text-neutral-900 dark:text-neutral-100">{{ scene.name }}</h2>
-        <p v-if="formattedDate" class="text-sm text-neutral-400 mt-0.5">{{ formattedDate }}</p>
+        <h2 class="font-medium text-neutral-900 dark:text-neutral-100">
+          {{ scene.name }}
+        </h2>
+        <p v-if="formattedDate" class="text-sm text-neutral-400 mt-0.5">
+          {{ formattedDate }}
+        </p>
         <p class="text-sm text-neutral-500 mt-1">
           {{ scene.hotspots.length }}
-          {{ scene.hotspots.length === 1 ? 'link' : 'links' }}
+          {{ scene.hotspots.length === 1 ? "link" : "links" }}
         </p>
       </div>
     </UCard>
