@@ -3,9 +3,9 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "nuxt build",
+    "build": "NUXT_PUBLIC_PROMETHEUS_VERBOSE=false nuxt build",
     "dev": "nuxt dev",
-    "generate": "nuxt generate",
+    "generate": "NUXT_PUBLIC_PROMETHEUS_VERBOSE=false nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
@@ -15,6 +15,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@artmizu/nuxt-prometheus": "3.0.3",
     "@nuxt/ui": "4.9.0",
     "@photo-sphere-viewer/core": "5.14.1",
     "@photo-sphere-viewer/virtual-tour-plugin": "5.14.1",
