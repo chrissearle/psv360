@@ -8,8 +8,9 @@ import type { Scene } from '~~/shared/types'
 const props = defineProps<{
   scene: Scene
   allScenes: Scene[]
-  picker?: boolean
 }>()
+
+const isDev = import.meta.dev
 
 const container = ref<HTMLDivElement>()
 let viewer: Viewer | null = null
@@ -73,7 +74,7 @@ onMounted(() => {
         }
       })
 
-      if (props.picker) {
+      if (import.meta.dev) {
         viewer.addEventListener(events.PositionUpdatedEvent.type, (e) => {
           currentPos.value = { yaw: e.position.yaw, pitch: e.position.pitch }
         })
@@ -97,7 +98,7 @@ onBeforeUnmount(() => {
   <div class="relative w-full">
     <div ref="container" />
     <div
-      v-if="picker"
+      v-if="isDev"
       class="absolute top-4 right-4 z-50 bg-black/75 text-white text-xs font-mono rounded p-3 space-y-2 pointer-events-none select-text"
     >
       <div class="font-semibold text-neutral-300 mb-1">Coordinate Picker</div>

@@ -17,8 +17,6 @@ useHead(() => ({ title: scene.value ? `${scene.value.name} — 360°` : '360°' 
 
 const panoTitle = useState<string | null>('pano-title', () => null)
 panoTitle.value = scene.value?.name ?? null
-
-const picker = computed(() => route.query.picker === '1')
 </script>
 
 <template>
@@ -28,7 +26,6 @@ const picker = computed(() => route.query.picker === '1')
         v-if="scene && allScenes"
         :scene="scene"
         :all-scenes="allScenes"
-        :picker="picker"
       />
       <template #fallback>
         <div class="flex items-center justify-center h-full text-neutral-400">
