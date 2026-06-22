@@ -12,6 +12,8 @@ const props = defineProps<{
 
 const isDev = import.meta.dev
 
+const panoTitle = useState<string | null>('pano-title', () => null)
+
 const container = ref<HTMLDivElement>()
 let viewer: Viewer | null = null
 
@@ -71,6 +73,11 @@ onMounted(() => {
         if (!e.data.fromNode) {
           const pos = defaultPositions.get(e.node.id)
           if (pos) viewer?.rotate(pos)
+        } else {
+          history.pushState(null, '', `/pano/${e.node.id}`)
+          const name = e.node.name ?? e.node.id
+          panoTitle.value = name
+          document.title = `${name} — 360°`
         }
       })
 
