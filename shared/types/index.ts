@@ -13,6 +13,7 @@ export interface Scene {
   date?: string
   thumbnail?: string
   hotspots: Hotspot[]
+  defaultPosition?: { yaw: number; pitch: number }
 }
 
 export interface PanoConfig {

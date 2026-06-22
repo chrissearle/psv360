@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Viewer } from '@photo-sphere-viewer/core'
-import { VirtualTourPlugin } from '@photo-sphere-viewer/virtual-tour-plugin'
+import { Viewer, events } from '@photo-sphere-viewer/core'
+import { VirtualTourPlugin, events as vtEvents } from '@photo-sphere-viewer/virtual-tour-plugin'
 import '@photo-sphere-viewer/core/index.css'
 import '@photo-sphere-viewer/virtual-tour-plugin/index.css'
 import type { Scene } from '~~/shared/types'
@@ -8,10 +8,25 @@ import type { Scene } from '~~/shared/types'
 const props = defineProps<{
   scene: Scene
   allScenes: Scene[]
+  picker?: boolean
 }>()
 
 const container = ref<HTMLDivElement>()
 let viewer: Viewer | null = null
+
+const currentPos = ref({ yaw: 0, pitch: 0 })
+const clickedPos = ref<{ yaw: number; pitch: number } | null>(null)
+
+const fmt = (n: number) => n.toFixed(4)
+
+const defaultPositionJson = computed(
+  () => `"defaultPosition": {"yaw": ${fmt(currentPos.value.yaw)}, "pitch": ${fmt(currentPos.value.pitch)}}`,
+)
+const clickedJson = computed(() =>
+  clickedPos.value
+    ? `"yaw": ${fmt(clickedPos.value.yaw)}, "pitch": ${fmt(clickedPos.value.pitch)}`
+    : '',
+)
 
 onMounted(() => {
   requestAnimationFrame(() => {
@@ -23,16 +38,17 @@ onMounted(() => {
     const rect = container.value.getBoundingClientRect()
     container.value.style.height = `${window.innerHeight - rect.top}px`
 
-    console.log('[PanoViewer] rect.top:', rect.top, '| height set to:', window.innerHeight - rect.top)
-    console.log('[PanoViewer] scene:', props.scene.id, '| nodes:', props.allScenes.length)
+    const defaultPositions = new Map(
+      props.allScenes
+        .filter((s) => s.defaultPosition)
+        .map((s) => [s.id, s.defaultPosition!]),
+    )
 
     const nodes = props.allScenes.map((s) => ({
       id: s.id,
       panorama: `/api/image/${encodeURI(s.image)}`,
       name: s.name,
-      thumbnail: s.thumbnail
-        ? `/api/image/${encodeURI(s.thumbnail)}`
-        : undefined,
+      thumbnail: s.thumbnail ? `/api/image/${encodeURI(s.thumbnail)}` : undefined,
       links: s.hotspots.map((h) => ({
         nodeId: h.targetId,
         position: { yaw: h.yaw, pitch: h.pitch },
@@ -45,16 +61,26 @@ onMounted(() => {
         container: container.value,
         navbar: ['zoom', 'move', 'fullscreen'],
         plugins: [
-          [
-            VirtualTourPlugin,
-            {
-              nodes,
-              startNodeId: props.scene.id,
-              renderMode: '3d',
-            },
-          ],
+          [VirtualTourPlugin, { nodes, startNodeId: props.scene.id, renderMode: '3d' }],
         ],
       })
+
+      const virtualTour = viewer.getPlugin(VirtualTourPlugin)
+      virtualTour.addEventListener(vtEvents.NodeChangedEvent.type, (e) => {
+        if (!e.data.fromNode) {
+          const pos = defaultPositions.get(e.node.id)
+          if (pos) viewer?.rotate(pos)
+        }
+      })
+
+      if (props.picker) {
+        viewer.addEventListener(events.PositionUpdatedEvent.type, (e) => {
+          currentPos.value = { yaw: e.position.yaw, pitch: e.position.pitch }
+        })
+        viewer.addEventListener(events.ClickEvent.type, (e) => {
+          clickedPos.value = { yaw: e.data.yaw, pitch: e.data.pitch }
+        })
+      }
     } catch (e) {
       console.error('[PanoViewer] PSV init failed:', e)
     }
@@ -68,5 +94,24 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div ref="container" class="w-full" />
+  <div class="relative w-full">
+    <div ref="container" />
+    <div
+      v-if="picker"
+      class="absolute top-4 right-4 z-50 bg-black/75 text-white text-xs font-mono rounded p-3 space-y-2 pointer-events-none select-text"
+    >
+      <div class="font-semibold text-neutral-300 mb-1">Coordinate Picker</div>
+      <div>
+        <div class="text-neutral-400">Current view (defaultPosition)</div>
+        <div>yaw: {{ fmt(currentPos.yaw) }} &nbsp; pitch: {{ fmt(currentPos.pitch) }}</div>
+        <div class="text-neutral-500 mt-0.5">{{ defaultPositionJson }}</div>
+      </div>
+      <div v-if="clickedPos">
+        <div class="text-neutral-400">Last click (hotspot position)</div>
+        <div>yaw: {{ fmt(clickedPos.yaw) }} &nbsp; pitch: {{ fmt(clickedPos.pitch) }}</div>
+        <div class="text-neutral-500 mt-0.5">{{ clickedJson }}</div>
+      </div>
+      <div v-else class="text-neutral-500">Click the sphere to record a hotspot position</div>
+    </div>
+  </div>
 </template>
