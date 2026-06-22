@@ -7,7 +7,7 @@ A self-hosted 360° panorama viewer built with [Nuxt 4](https://nuxt.com) and [P
 - **Gallery** — entry page lists all available panoramas, newest first
 - **Viewer** — full-screen 360° viewer with hotspot navigation between scenes
 - **Deep links** — `/pano/<id>` links directly to any scene; the address bar and page title update as you navigate between scenes via hotspots, so every scene stays bookmarkable and shareable
-- **Embeds** — `/embed/<id>` returns a static preview image that links to the full viewer, suitable for use in `<iframe>` or as a plain `<a><img></a>` on an external site
+- **Embeds** — `/embed/<id>` is an HTML preview page suitable for `<iframe>`; `/thumb/<id>` serves the thumbnail image directly for use as `<img src>` on external sites
 - **Metrics** — Prometheus metrics exposed at `/metrics`
 
 ## Setup
@@ -132,15 +132,19 @@ Both are shown pre-formatted ready to paste into `config.json`.
 
 ## Embedding
 
-To embed a panorama preview on an external page that links to the viewer:
+### Image link (recommended for blogs and external pages)
+
+Use `/thumb/<id>` as the image source — it returns the scene's thumbnail (or full image if no thumbnail is set) with the correct image MIME type:
 
 ```html
 <a href="https://your-host/pano/2024-06-15-garden" target="_blank">
-  <img src="https://your-host/embed/2024-06-15-garden" alt="Garden panorama" />
+  <img src="https://your-host/thumb/2024-06-15-garden" alt="Garden panorama" />
 </a>
 ```
 
-Or as an iframe:
+### iframe embed
+
+`/embed/<id>` returns an HTML page with a static preview image that links to the viewer. Use this for iframes only — it cannot be used as an `<img src>`:
 
 ```html
 <iframe src="https://your-host/embed/2024-06-15-garden" width="800" height="450" frameborder="0"></iframe>
