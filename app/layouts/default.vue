@@ -29,9 +29,14 @@ const showPanoTitle = computed(() => route.path.startsWith('/pano/') && !!panoTi
         </NuxtLink>
       </div>
 
-      <div class="text-center text-xl font-semibold tracking-tight truncate px-2">
-        {{ showPanoTitle ? panoTitle : '' }}
-      </div>
+      <ClientOnly>
+        <div class="text-center text-xl font-semibold tracking-tight truncate px-2">
+          {{ showPanoTitle ? panoTitle : '' }}
+        </div>
+        <template #fallback>
+          <div />
+        </template>
+      </ClientOnly>
 
       <div class="flex justify-end">
         <UButton variant="ghost" size="sm" :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'" @click="toggleColorMode">
