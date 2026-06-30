@@ -15,14 +15,14 @@ importers:
         specifier: 4.9.0
         version: 4.9.0(95055329d377ac03406559229e6a89ad)
       '@photo-sphere-viewer/core':
-        specifier: 5.14.1
-        version: 5.14.1
+        specifier: 5.14.3
+        version: 5.14.3
       '@photo-sphere-viewer/equirectangular-tiles-adapter':
         specifier: 5.14.1
-        version: 5.14.1(@photo-sphere-viewer/core@5.14.1)
+        version: 5.14.1(@photo-sphere-viewer/core@5.14.3)
       '@photo-sphere-viewer/virtual-tour-plugin':
         specifier: 5.14.1
-        version: 5.14.1(@photo-sphere-viewer/core@5.14.1)
+        version: 5.14.1(@photo-sphere-viewer/core@5.14.3)
       nuxt:
         specifier: 4.4.8
         version: 4.4.8(@babel/plugin-syntax-jsx@7.29.7(@babel/core@7.29.7))(@babel/plugin-syntax-typescript@7.29.7(@babel/core@7.29.7))(@parcel/watcher@2.5.6)(@types/node@22.19.21)(@vue/compiler-sfc@3.5.38)(cac@6.7.14)(db0@0.3.4)(eslint@10.5.0(jiti@2.7.0))(ioredis@5.11.1)(lightningcss@1.32.0)(magicast@0.5.3)(optionator@0.9.4)(rollup-plugin-visualizer@7.0.1(rollup@4.62.0))(rollup@4.62.0)(srvx@0.11.16)(terser@5.48.0)(typescript@6.0.3)(vite@7.3.5(@types/node@22.19.21)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.48.0)(yaml@2.9.0))(yaml@2.9.0)
@@ -1563,8 +1563,8 @@ packages:
     resolution: {integrity: sha512-tmmZ3lQxAe/k/+rNnXQRawJ4NjxO2hqiOLTHvWchtGZULp4RyFeh6aU4XdOYBFe2KE1oShQTv4AblOs2iOrNnQ==}
     engines: {node: '>= 10.0.0'}
 
-  '@photo-sphere-viewer/core@5.14.1':
-    resolution: {integrity: sha512-qrwUudrX9YZms4c2shlY/H3jUP0oh9FyGEqIDr/95ulNZgKbhQ6C/i8zDQ4j8ooFR4+z5FDORQtGvLgPyX8VCA==}
+  '@photo-sphere-viewer/core@5.14.3':
+    resolution: {integrity: sha512-gSDzM1fuVfWQiDf8Y4AgI+un/wsKmeFO7cY4IFEbjhD1BTXUviSL8GuCXABNfPK2EThZLJqpOXxrbYAhblJrfQ==}
 
   '@photo-sphere-viewer/equirectangular-tiles-adapter@5.14.1':
     resolution: {integrity: sha512-QHd9y5cIFXAAZInbKbh+nUz5uzSRTiR8HYApm+ONlDu8JHAp410xNhB1vNm2Q1mVgg8IigQpD9Za5mPq10fESA==}
@@ -4886,8 +4886,8 @@ packages:
   text-decoder@1.2.7:
     resolution: {integrity: sha512-vlLytXkeP4xvEq2otHeJfSQIRyWxo/oZGEbXrtEEF9Hnmrdly59sUbzZ/QgyWuLYHctCHxFF4tRQZNQ9k60ExQ==}
 
-  three@0.179.1:
-    resolution: {integrity: sha512-5y/elSIQbrvKOISxpwXCR4sQqHtGiOI+MKLc3SsBdDXA2hz3Mdp3X59aUp8DyybMa34aeBwbFTpdoLJaUDEWSw==}
+  three@0.184.0:
+    resolution: {integrity: sha512-wtTRjG92pM5eUg/KuUnHsqSAlPM296brTOcLgMRqEeylYTh/CdtvKUvCyyCQTzFuStieWxvZb8mVTMvdPyUpxg==}
 
   tiny-inflate@1.0.3:
     resolution: {integrity: sha512-pkY1fj1cKHb2seWDy0B16HeWyczlJA9/WW3u3c4z/NiWDsO3DOU5D7nhTLE9CF0yXv/QZFY7sEJmj24dK+Rrqw==}
@@ -6919,17 +6919,17 @@ snapshots:
       '@parcel/watcher-win32-ia32': 2.5.6
       '@parcel/watcher-win32-x64': 2.5.6
 
-  '@photo-sphere-viewer/core@5.14.1':
+  '@photo-sphere-viewer/core@5.14.3':
     dependencies:
-      three: 0.179.1
+      three: 0.184.0
 
-  '@photo-sphere-viewer/equirectangular-tiles-adapter@5.14.1(@photo-sphere-viewer/core@5.14.1)':
+  '@photo-sphere-viewer/equirectangular-tiles-adapter@5.14.1(@photo-sphere-viewer/core@5.14.3)':
     dependencies:
-      '@photo-sphere-viewer/core': 5.14.1
+      '@photo-sphere-viewer/core': 5.14.3
 
-  '@photo-sphere-viewer/virtual-tour-plugin@5.14.1(@photo-sphere-viewer/core@5.14.1)':
+  '@photo-sphere-viewer/virtual-tour-plugin@5.14.1(@photo-sphere-viewer/core@5.14.3)':
     dependencies:
-      '@photo-sphere-viewer/core': 5.14.1
+      '@photo-sphere-viewer/core': 5.14.3
 
   '@pkgjs/parseargs@0.11.0':
     optional: true
@@ -10493,7 +10493,7 @@ snapshots:
     transitivePeerDependencies:
       - react-native-b4a
 
-  three@0.179.1: {}
+  three@0.184.0: {}
 
   tiny-inflate@1.0.3: {}
 
