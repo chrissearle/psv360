@@ -17,7 +17,7 @@ pnpm lint         # ESLint
 pnpm lint:fix     # ESLint with auto-fix
 pnpm typecheck    # vue-tsc type check
 
-node --experimental-strip-types scripts/generate-config.ts   # scan PANO_DIR, add new scenes, generate tiles
+pnpm generate:config  # scan PANO_DIR, add new scenes, generate tiles
 ```
 
 ## Tech Stack
@@ -94,7 +94,7 @@ Types live in `shared/types/index.ts` and are usable in both `app/` and `server/
 
 ### Tile generation
 
-`scripts/generate-config.ts` (run with `node --experimental-strip-types`):
+`scripts/generate-config.ts` (run via `pnpm generate:config`):
 
 - Scans `PANO_DIR` for directories containing `panorama.jpg`
 - Adds new scenes to `config.json`
