@@ -24,7 +24,7 @@ const formattedDate = computed(() => {
       <template #header>
         <div class="aspect-video bg-neutral-800 overflow-hidden -mx-4 -mt-4">
           <img
-            :src="`/api/image/${encodeURI(scene.thumbnail ?? scene.image)}`"
+            :src="`/api/image/${encodeURI(scene.path)}/thumb.jpg`"
             :alt="scene.name"
             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />

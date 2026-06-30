@@ -35,7 +35,11 @@ function makeName(panoDir: string): string {
 }
 
 function findJpg(dir: string): string | undefined {
-  return readdirSync(dir).find((f) => /\.(jpg|jpeg)$/i.test(f))
+  const files = readdirSync(dir)
+  return (
+    files.find((f) => f === "panorama.jpg") ??
+    files.find((f) => /\.(jpg|jpeg)$/i.test(f) && !/^thumb\./i.test(f))
+  )
 }
 
 function extractDate(panoDir: string): string | undefined {
@@ -77,23 +81,22 @@ for (const dir of findPanoDirs(PANO_DIR)) {
     continue
   }
 
-  const jpg = findJpg(dir)
-  if (!jpg) {
-    console.warn(`Skipping ${dir}: no .jpg found`)
+  if (!findJpg(dir)) {
+    console.warn(`Skipping ${dir}: no panorama.jpg found`)
     continue
   }
 
-  const imagePath = relative(PANO_DIR, join(dir, jpg)).split(sep).join("/")
+  const scenePath = relative(PANO_DIR, dir).split(sep).join("/")
   const scene: Scene = {
     id,
     name: makeName(dir),
-    image: imagePath,
+    path: scenePath,
     ...(date && { date }),
     hotspots: [],
   }
 
   config.scenes.push(scene)
-  console.log(`Added: ${id}  (${imagePath}${date ? `, ${date}` : ""})`)
+  console.log(`Added: ${id}  (${scenePath}${date ? `, ${date}` : ""})`)
   added++
 }
 

@@ -53,11 +53,9 @@ onMounted(() => {
 
     const nodes = props.allScenes.map((s) => ({
       id: s.id,
-      panorama: `/api/image/${encodeURI(s.image)}`,
+      panorama: `/api/image/${encodeURI(s.path)}/panorama.jpg`,
       name: s.name,
-      thumbnail: s.thumbnail
-        ? `/api/image/${encodeURI(s.thumbnail)}`
-        : undefined,
+      thumbnail: `/api/image/${encodeURI(s.path)}/thumb.jpg`,
       links: s.hotspots.map((h) => ({
         nodeId: h.targetId,
         position: { yaw: h.yaw, pitch: h.pitch },

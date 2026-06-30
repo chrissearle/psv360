@@ -9,9 +9,8 @@ export interface Hotspot {
 export interface Scene {
   id: string
   name: string
-  image: string
+  path: string
   date?: string
-  thumbnail?: string
   hotspots: Hotspot[]
   defaultPosition?: { yaw: number; pitch: number }
 }

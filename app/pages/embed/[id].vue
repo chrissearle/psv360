@@ -24,17 +24,10 @@ definePageMeta({ layout: false })
     <template v-if="scene">
       <NuxtLink :to="`/pano/${scene.id}`" target="_blank" rel="noopener">
         <img
-          v-if="scene.thumbnail"
-          :src="`/api/image/${encodeURI(scene.thumbnail)}`"
+          :src="`/api/image/${encodeURI(scene.path)}/thumb.jpg`"
           :alt="scene.name"
           class="w-full h-full object-cover"
         />
-        <div
-          v-else
-          class="w-full h-full flex items-center justify-center bg-neutral-800 text-neutral-500"
-        >
-          <UIcon name="i-heroicons-photo" class="w-16 h-16" />
-        </div>
 
         <div
           class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity"
