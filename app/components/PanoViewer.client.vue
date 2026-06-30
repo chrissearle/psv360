@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Viewer, events } from "@photo-sphere-viewer/core"
+import { EquirectangularTilesAdapter } from "@photo-sphere-viewer/equirectangular-tiles-adapter"
 import {
   VirtualTourPlugin,
   events as vtEvents,
@@ -7,6 +8,20 @@ import {
 import "@photo-sphere-viewer/core/index.css"
 import "@photo-sphere-viewer/virtual-tour-plugin/index.css"
 import type { Scene } from "~~/shared/types"
+
+function panoramaFor(s: Scene) {
+  if (s.tiles) {
+    return {
+      width: s.tiles.width,
+      cols: s.tiles.cols,
+      rows: s.tiles.rows,
+      baseUrl: `/api/image/${encodeURI(s.path)}/base.jpg`,
+      tileUrl: (col: number, row: number) =>
+        `/api/image/${encodeURI(s.path)}/tiles/tile_${col}_${row}.jpg`,
+    }
+  }
+  return `/api/image/${encodeURI(s.path)}/panorama.jpg`
+}
 
 const props = defineProps<{
   scene: Scene
@@ -53,7 +68,7 @@ onMounted(() => {
 
     const nodes = props.allScenes.map((s) => ({
       id: s.id,
-      panorama: `/api/image/${encodeURI(s.path)}/panorama.jpg`,
+      panorama: panoramaFor(s),
       name: s.name,
       thumbnail: `/api/image/${encodeURI(s.path)}/thumb.jpg`,
       links: s.hotspots.map((h) => ({
@@ -63,9 +78,12 @@ onMounted(() => {
       })),
     }))
 
+    const hasTiles = props.allScenes.some((s) => s.tiles)
+
     try {
       viewer = new Viewer({
         container: container.value,
+        adapter: hasTiles ? EquirectangularTilesAdapter : undefined,
         navbar: ["zoom", "move", "fullscreen"],
         plugins: [
           [
