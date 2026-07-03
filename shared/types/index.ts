@@ -13,6 +13,15 @@ export interface TileConfig {
   rows: number
 }
 
+export interface Marker {
+  id: string
+  yaw: number
+  pitch: number
+  tooltip?: string
+  icon?: string
+  color?: string
+}
+
 export interface Scene {
   id: string
   name: string
@@ -20,6 +29,7 @@ export interface Scene {
   date?: string
   tiles?: TileConfig
   hotspots: Hotspot[]
+  markers?: Marker[]
   defaultPosition?: { yaw: number; pitch: number }
 }
 

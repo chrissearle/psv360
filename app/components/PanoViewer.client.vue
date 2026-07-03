@@ -1,13 +1,29 @@
 <script setup lang="ts">
 import { Viewer, events } from "@photo-sphere-viewer/core"
 import { EquirectangularTilesAdapter } from "@photo-sphere-viewer/equirectangular-tiles-adapter"
+import { MarkersPlugin } from "@photo-sphere-viewer/markers-plugin"
 import {
   VirtualTourPlugin,
   events as vtEvents,
 } from "@photo-sphere-viewer/virtual-tour-plugin"
 import "@photo-sphere-viewer/core/index.css"
 import "@photo-sphere-viewer/virtual-tour-plugin/index.css"
-import type { Scene } from "~~/shared/types"
+import "@photo-sphere-viewer/markers-plugin/index.css"
+import type { Marker, Scene } from "~~/shared/types"
+
+function buildMarkers(markers: Marker[]) {
+  return markers.map((m) => ({
+    id: m.id,
+    position: { yaw: m.yaw, pitch: m.pitch },
+    html: markerIconHtml(m.icon),
+    className: "flex items-center justify-center w-16 h-16 drop-shadow-md",
+    style: { color: m.color ?? "#ffffff" },
+    anchor: "center center",
+    tooltip: m.tooltip
+      ? { content: m.tooltip, className: "psv-marker-tooltip" }
+      : undefined,
+  }))
+}
 
 function panoramaFor(s: Scene) {
   if (s.tiles) {
@@ -49,6 +65,11 @@ const clickedJson = computed(() =>
     ? `"yaw": ${fmt(clickedPos.value.yaw)}, "pitch": ${fmt(clickedPos.value.pitch)}`
     : "",
 )
+const markerJson = computed(() =>
+  clickedPos.value
+    ? `{"id": "", "yaw": ${fmt(clickedPos.value.yaw)}, "pitch": ${fmt(clickedPos.value.pitch)}, "tooltip": ""}`
+    : "",
+)
 
 onMounted(() => {
   requestAnimationFrame(() => {
@@ -64,6 +85,10 @@ onMounted(() => {
       props.allScenes
         .filter((s) => s.defaultPosition)
         .map((s) => [s.id, s.defaultPosition!]),
+    )
+
+    const markersByScene = new Map(
+      props.allScenes.map((s) => [s.id, s.markers ?? []]),
     )
 
     const nodes = props.allScenes.map((s) => ({
@@ -90,13 +115,17 @@ onMounted(() => {
             VirtualTourPlugin,
             { nodes, startNodeId: props.scene.id, renderMode: "3d" },
           ],
+          MarkersPlugin,
         ],
       })
 
       const virtualTour = viewer.getPlugin(VirtualTourPlugin)
+      const markersPlugin = viewer.getPlugin<MarkersPlugin>(MarkersPlugin)
       virtualTour.addEventListener(vtEvents.NodeChangedEvent.type, (e) => {
         const pos = defaultPositions.get(e.node.id)
         if (pos) viewer?.rotate(pos)
+
+        markersPlugin.setMarkers(buildMarkers(markersByScene.get(e.node.id) ?? []))
 
         if (e.data.fromNode) {
           history.pushState(null, "", `/pano/${e.node.id}`)
@@ -131,7 +160,7 @@ onBeforeUnmount(() => {
     <div ref="container"></div>
     <div
       v-if="isDev"
-      class="absolute top-4 right-4 z-50 bg-black/75 text-white text-xs font-mono rounded p-3 space-y-2 pointer-events-none select-text"
+      class="absolute top-4 right-4 z-50 bg-black/75 text-white text-xs font-mono rounded p-3 space-y-2 pointer-events-auto select-text"
     >
       <div class="font-semibold text-neutral-300 mb-1">Coordinate Picker</div>
       <div>
@@ -149,6 +178,8 @@ onBeforeUnmount(() => {
           {{ fmt(clickedPos.pitch) }}
         </div>
         <div class="text-neutral-500 mt-0.5">{{ clickedJson }}</div>
+        <div class="text-neutral-400 mt-2">Last click (marker)</div>
+        <div class="text-neutral-500 mt-0.5">{{ markerJson }}</div>
       </div>
       <div v-else class="text-neutral-500">
         Click the sphere to record a hotspot position

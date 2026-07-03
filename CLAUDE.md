@@ -79,6 +79,16 @@ tiles/
           "label": "optional"
         }
       ],
+      "markers": [
+        {
+          "id": "m1",
+          "yaw": 0.5,
+          "pitch": 0.0,
+          "tooltip": "optional",
+          "icon": "camera",
+          "color": "optional, defaults to white"
+        }
+      ],
       "defaultPosition": { "yaw": 0.0, "pitch": 0.0 }
     }
   ]
@@ -87,6 +97,7 @@ tiles/
 
 - `path` is relative to `PANO_DIR`; the app derives `panorama.jpg`, `thumb.jpg`, `base.jpg`, and `tiles/tile_COL_ROW.jpg` from it automatically.
 - `tiles` is written by `generate-config.ts` after slicing. PSV requires `cols` and `rows` to both be powers of 2. Current fixed values: `cols=32, rows=16`.
+- `markers` are optional, hand-authored points of interest (hover tooltip only, no navigation). `icon` selects from the curated set in `app/utils/markerIcons.ts` (`info`, `map-pin`, `camera`, `star`, `flag`, `question-mark-circle`); omitted or unknown values fall back to `info`. `color` is any valid CSS color; omitted defaults to white.
 - `id` is derived from the directory path with `/` replaced by `-`.
 - Scenes without `tiles` fall back to loading `panorama.jpg` directly.
 
