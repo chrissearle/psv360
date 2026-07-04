@@ -10,9 +10,25 @@ if (error.value) {
   throw createError({ statusCode: 404, message: `Scene not found: ${id}` })
 }
 
-useHead(() => ({
-  title: scene.value?.name ?? "360° Panorama",
-}))
+const requestURL = useRequestURL()
+
+const pageTitle = computed(() => scene.value?.name ?? "360° Panorama")
+const pageImage = computed(() => {
+  const s = scene.value
+  return s
+    ? `${requestURL.origin}/api/image/${encodeURI(s.path)}/thumb.jpg`
+    : undefined
+})
+
+useSeoMeta({
+  title: pageTitle,
+  ogTitle: pageTitle,
+  ogImage: pageImage,
+  ogUrl: () => requestURL.href,
+  twitterCard: "summary_large_image",
+  twitterTitle: pageTitle,
+  twitterImage: pageImage,
+})
 
 definePageMeta({ layout: false })
 </script>

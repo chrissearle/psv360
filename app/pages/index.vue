@@ -13,7 +13,19 @@ const sorted = computed<Scene[]>(() => {
   })
 })
 
-useHead({ title: "360° Panoramas" })
+const requestURL = useRequestURL()
+
+useSeoMeta({
+  title: "360° Panoramas",
+  description: "Browse a collection of self-hosted 360° panoramas.",
+  ogTitle: "360° Panoramas",
+  ogDescription: "Browse a collection of self-hosted 360° panoramas.",
+  ogUrl: requestURL.href,
+  ogType: "website",
+  twitterCard: "summary",
+  twitterTitle: "360° Panoramas",
+  twitterDescription: "Browse a collection of self-hosted 360° panoramas.",
+})
 </script>
 
 <template>

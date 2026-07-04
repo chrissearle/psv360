@@ -13,7 +13,37 @@ if (error.value) {
   throw createError({ statusCode: 404, message: `Scene not found: ${id}` })
 }
 
-useHead(() => ({ title: scene.value ? `${scene.value.name} — 360°` : "360°" }))
+const requestURL = useRequestURL()
+
+const pageTitle = computed(() =>
+  scene.value ? `${scene.value.name} — 360°` : "360°",
+)
+const pageDescription = computed(() => {
+  const s = scene.value
+  return s
+    ? `360° panorama${s.date ? ` from ${s.date}` : ""}: ${s.name}`
+    : "360° panorama viewer"
+})
+const pageImage = computed(() => {
+  const s = scene.value
+  return s
+    ? `${requestURL.origin}/api/image/${encodeURI(s.path)}/thumb.jpg`
+    : undefined
+})
+
+useSeoMeta({
+  title: pageTitle,
+  description: pageDescription,
+  ogTitle: pageTitle,
+  ogDescription: pageDescription,
+  ogImage: pageImage,
+  ogUrl: () => requestURL.href,
+  ogType: "website",
+  twitterCard: "summary_large_image",
+  twitterTitle: pageTitle,
+  twitterDescription: pageDescription,
+  twitterImage: pageImage,
+})
 
 const panoTitle = useState<string | null>("pano-title", () => null)
 panoTitle.value = scene.value?.name ?? null
