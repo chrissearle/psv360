@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import type { Scene } from "~~/shared/types"
+import type { Scene, Section } from "~~/shared/types"
 
 const route = useRoute()
 const id = route.params.id as string
 
-const [{ data: scene, error }, { data: allScenes }] = await Promise.all([
-  useFetch<Scene>(`/api/scenes/${id}`),
-  useFetch<Scene[]>("/api/scenes"),
-])
+const [{ data: scene, error }, { data: allScenes }, { data: sections }] =
+  await Promise.all([
+    useFetch<Scene>(`/api/scenes/${id}`),
+    useFetch<Scene[]>("/api/scenes"),
+    useFetch<Section[]>("/api/sections"),
+  ])
 
 if (error.value) {
   throw createError({ statusCode: 404, message: `Scene not found: ${id}` })
@@ -45,8 +47,18 @@ useSeoMeta({
   twitterImage: pageImage,
 })
 
+const section = computed(() =>
+  sections.value?.find((s) => s.id === scene.value?.sectionId),
+)
+
 const panoTitle = useState<string | null>("pano-title", () => null)
-panoTitle.value = scene.value?.name ?? null
+const panoSectionId = useState<string | null>("pano-section-id", () => null)
+panoTitle.value = scene.value
+  ? section.value
+    ? `${scene.value.name} - ${section.value.name}`
+    : scene.value.name
+  : null
+panoSectionId.value = scene.value?.sectionId ?? null
 </script>
 
 <template>
@@ -56,6 +68,7 @@ panoTitle.value = scene.value?.name ?? null
         v-if="scene && allScenes"
         :scene="scene"
         :all-scenes="allScenes"
+        :sections="sections ?? []"
       />
       <template #fallback>
         <div class="flex items-center justify-center h-full text-neutral-400">

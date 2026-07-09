@@ -9,7 +9,7 @@ import {
 import "@photo-sphere-viewer/core/index.css"
 import "@photo-sphere-viewer/virtual-tour-plugin/index.css"
 import "@photo-sphere-viewer/markers-plugin/index.css"
-import type { Marker, Scene } from "~~/shared/types"
+import type { Marker, Scene, Section } from "~~/shared/types"
 
 function buildMarkers(markers: Marker[]) {
   return markers.map((m) => ({
@@ -42,11 +42,13 @@ function panoramaFor(s: Scene) {
 const props = defineProps<{
   scene: Scene
   allScenes: Scene[]
+  sections: Section[]
 }>()
 
 const isDev = import.meta.dev
 
 const panoTitle = useState<string | null>("pano-title", () => null)
+const panoSectionId = useState<string | null>("pano-section-id", () => null)
 
 const container = ref<HTMLDivElement>()
 let viewer: Viewer | null = null
@@ -91,6 +93,11 @@ onMounted(() => {
       props.allScenes.map((s) => [s.id, s.markers ?? []]),
     )
 
+    const sectionIdByScene = new Map(
+      props.allScenes.map((s) => [s.id, s.sectionId]),
+    )
+    const sectionsById = new Map(props.sections.map((s) => [s.id, s]))
+
     const nodes = props.allScenes.map((s) => ({
       id: s.id,
       panorama: panoramaFor(s),
@@ -130,7 +137,10 @@ onMounted(() => {
         if (e.data.fromNode) {
           history.pushState(null, "", `/pano/${e.node.id}`)
           const name = e.node.name ?? e.node.id
-          panoTitle.value = name
+          const sectionId = sectionIdByScene.get(e.node.id)
+          const section = sectionId ? sectionsById.get(sectionId) : undefined
+          panoTitle.value = section ? `${name} - ${section.name}` : name
+          panoSectionId.value = sectionId ?? null
           document.title = `${name} — 360°`
         }
       })

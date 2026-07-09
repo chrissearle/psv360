@@ -1,16 +1,38 @@
 <script setup lang="ts">
-import type { Scene } from "~~/shared/types"
+import type { Scene, Section } from "~~/shared/types"
 
-const { data: scenes, error } = await useFetch<Scene[]>("/api/scenes")
+const [{ data: scenes, error }, { data: sections }] = await Promise.all([
+  useFetch<Scene[]>("/api/scenes"),
+  useFetch<Section[]>("/api/sections"),
+])
 
-const sorted = computed<Scene[]>(() => {
-  if (!scenes.value) return []
-  return [...scenes.value].sort((a, b) => {
-    if (!a.date && !b.date) return 0
-    if (!a.date) return 1
-    if (!b.date) return -1
-    return b.date.localeCompare(a.date)
+interface SectionCardData {
+  section: Section
+  thumbScene: Scene
+  date: string | undefined
+}
+
+const sectionCards = computed<SectionCardData[]>(() => {
+  if (!scenes.value || !sections.value) return []
+
+  const cards = sections.value.flatMap((section) => {
+    const members = scenes.value!.filter((s) => s.sectionId === section.id)
+    const thumbScene = scenes.value!.find((s) => s.id === section.thumbId)
+    if (!thumbScene) return []
+
+    const date = sortByDateDesc(members)[0]?.date
+    return [{ section, thumbScene, date }]
   })
+
+  return sortByDateDesc(cards)
+})
+
+const ungrouped = computed<Scene[]>(() => {
+  if (!scenes.value || !sections.value) return []
+  const sectionIds = new Set(sections.value.map((s) => s.id))
+  return sortByDateDesc(
+    scenes.value.filter((s) => !s.sectionId || !sectionIds.has(s.sectionId)),
+  )
 })
 
 const requestURL = useRequestURL()
@@ -41,12 +63,21 @@ useSeoMeta({
     <template v-else-if="scenes">
       <h1 class="text-3xl font-bold mb-8">Panoramas</h1>
 
-      <p v-if="sorted.length === 0" class="text-neutral-400">
+      <p
+        v-if="sectionCards.length === 0 && ungrouped.length === 0"
+        class="text-neutral-400"
+      >
         No panoramas found. Add images and a config.json to your pano directory.
       </p>
 
       <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <SceneCard v-for="scene in sorted" :key="scene.id" :scene="scene" />
+        <SectionCard
+          v-for="card in sectionCards"
+          :key="card.section.id"
+          :section="card.section"
+          :thumb-scene="card.thumbScene"
+        />
+        <SceneCard v-for="scene in ungrouped" :key="scene.id" :scene="scene" />
       </div>
     </template>
   </div>

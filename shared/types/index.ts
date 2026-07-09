@@ -31,8 +31,17 @@ export interface Scene {
   hotspots: Hotspot[]
   markers?: Marker[]
   defaultPosition?: { yaw: number; pitch: number }
+  sectionId?: string
+}
+
+export interface Section {
+  id: string
+  name: string
+  description?: string
+  thumbId: string
 }
 
 export interface PanoConfig {
   scenes: Scene[]
+  sections?: Section[]
 }

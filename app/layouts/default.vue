@@ -9,8 +9,14 @@ const toggleColorMode = () => {
 }
 
 const panoTitle = useState<string | null>("pano-title", () => null)
+const panoSectionId = useState<string | null>("pano-section-id", () => null)
 const showPanoTitle = computed(
   () => route.path.startsWith("/pano/") && !!panoTitle.value,
+)
+const backTo = computed(() =>
+  route.path.startsWith("/pano/") && panoSectionId.value
+    ? `/section/${panoSectionId.value}`
+    : "/",
 )
 </script>
 
@@ -22,7 +28,7 @@ const showPanoTitle = computed(
       <div class="flex items-center gap-3">
         <NuxtLink
           v-if="isSubPage"
-          to="/"
+          :to="backTo"
           aria-label="Back to list"
           class="text-neutral-400 hover:text-neutral-100 transition-colors"
         >
