@@ -19,23 +19,24 @@
   "dependencies": {
     "@artmizu/nuxt-prometheus": "3.0.3",
     "@nuxt/ui": "4.9.0",
-    "@photo-sphere-viewer/core": "5.14.1",
-    "@photo-sphere-viewer/equirectangular-tiles-adapter": "5.14.1",
-    "@photo-sphere-viewer/markers-plugin": "5.14.1",
-    "@photo-sphere-viewer/virtual-tour-plugin": "5.14.1",
+    "@photo-sphere-viewer/core": "5.14.3",
+    "@photo-sphere-viewer/equirectangular-tiles-adapter": "5.14.3",
+    "@photo-sphere-viewer/markers-plugin": "5.14.3",
+    "@photo-sphere-viewer/virtual-tour-plugin": "5.14.3",
     "nuxt": "4.4.8",
-    "vue": "3.5.38",
+    "vue": "3.5.39",
     "vue-router": "5.1.0"
   },
   "devDependencies": {
     "@iconify-json/heroicons": "1.2.3",
     "@nuxt/eslint": "1.16.0",
-    "@types/node": "22.19.21",
-    "eslint": "10.5.0",
+    "@types/node": "26.1.1",
+    "eslint": "10.7.0",
     "husky": "9.1.7",
-    "lint-staged": "17.0.7",
-    "prettier": "3.8.4",
-    "typescript": "6.0.3"
+    "lint-staged": "17.0.8",
+    "prettier": "3.9.5",
+    "typescript": "6.0.3",
+    "vue-tsc": "3.3.7"
   },
   "lint-staged": {
     "*.{js,ts,vue}": "pnpm lint:fix"

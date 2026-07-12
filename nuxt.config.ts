@@ -16,6 +16,8 @@ export default defineNuxtConfig({
     optimizeDeps: {
       include: [
         "@photo-sphere-viewer/core",
+        "@photo-sphere-viewer/equirectangular-tiles-adapter",
+        "@photo-sphere-viewer/markers-plugin",
         "@photo-sphere-viewer/virtual-tour-plugin",
       ],
     },
