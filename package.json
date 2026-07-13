@@ -2,7 +2,7 @@
   "name": "psv360",
   "type": "module",
   "private": true,
-  "packageManager": "pnpm@11.10.0",
+  "packageManager": "pnpm@11.11.0",
   "scripts": {
     "build": "NUXT_PUBLIC_PROMETHEUS_VERBOSE=false nuxt build",
     "dev": "nuxt dev",
