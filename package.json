@@ -23,7 +23,7 @@
     "@photo-sphere-viewer/equirectangular-tiles-adapter": "5.14.3",
     "@photo-sphere-viewer/markers-plugin": "5.14.3",
     "@photo-sphere-viewer/virtual-tour-plugin": "5.14.3",
-    "nuxt": "4.4.8",
+    "nuxt": "4.5.0",
     "vue": "3.5.40",
     "vue-router": "5.2.0"
   },
