@@ -15,17 +15,17 @@ importers:
         specifier: 4.10.0
         version: 4.10.0(62714f5d92c4e3a793fa156ad2ada669)
       '@photo-sphere-viewer/core':
-        specifier: 5.14.3
-        version: 5.14.3
+        specifier: 5.15.0
+        version: 5.15.0
       '@photo-sphere-viewer/equirectangular-tiles-adapter':
         specifier: 5.14.3
-        version: 5.14.3(@photo-sphere-viewer/core@5.14.3)
+        version: 5.14.3(@photo-sphere-viewer/core@5.15.0)
       '@photo-sphere-viewer/markers-plugin':
         specifier: 5.14.3
-        version: 5.14.3(@photo-sphere-viewer/core@5.14.3)
+        version: 5.14.3(@photo-sphere-viewer/core@5.15.0)
       '@photo-sphere-viewer/virtual-tour-plugin':
         specifier: 5.14.3
-        version: 5.14.3(@photo-sphere-viewer/core@5.14.3)
+        version: 5.14.3(@photo-sphere-viewer/core@5.15.0)
       nuxt:
         specifier: 4.5.0
         version: 4.5.0(@babel/plugin-syntax-jsx@7.29.7(@babel/core@7.29.7(supports-color@10.2.2)))(@babel/plugin-syntax-typescript@7.29.7(@babel/core@7.29.7(supports-color@10.2.2)))(@parcel/watcher@2.5.6)(@types/node@26.1.1)(@vue/compiler-sfc@3.5.40)(cac@6.7.14)(crossws@0.4.6(srvx@0.11.22))(db0@0.3.4)(esbuild@0.28.1)(eslint@10.8.0(jiti@2.7.0)(supports-color@10.2.2))(ioredis@5.11.1(supports-color@10.2.2))(lightningcss@1.32.0)(magicast@0.5.3)(optionator@0.9.4)(oxc-parser@0.140.0)(rollup-plugin-visualizer@7.0.1(rolldown@1.2.0)(rollup@4.62.2))(rollup@4.62.2)(srvx@0.11.22)(supports-color@10.2.2)(terser@5.48.0)(typescript@6.0.3)(vite@8.1.5(@types/node@26.1.1)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(yaml@2.9.0))(vue-tsc@3.3.8(typescript@6.0.3))(yaml@2.9.0)
@@ -1352,8 +1352,8 @@ packages:
     resolution: {integrity: sha512-tmmZ3lQxAe/k/+rNnXQRawJ4NjxO2hqiOLTHvWchtGZULp4RyFeh6aU4XdOYBFe2KE1oShQTv4AblOs2iOrNnQ==}
     engines: {node: '>= 10.0.0'}
 
-  '@photo-sphere-viewer/core@5.14.3':
-    resolution: {integrity: sha512-gSDzM1fuVfWQiDf8Y4AgI+un/wsKmeFO7cY4IFEbjhD1BTXUviSL8GuCXABNfPK2EThZLJqpOXxrbYAhblJrfQ==}
+  '@photo-sphere-viewer/core@5.15.0':
+    resolution: {integrity: sha512-Mf72l3R8iBf+Im5duv7IVkX3uiKU1BT6bzzXmdE43KahQgNftt9pYKqTzN1YjaYLAzWDBCFZj/bEK1dIZXk9Gg==}
 
   '@photo-sphere-viewer/equirectangular-tiles-adapter@5.14.3':
     resolution: {integrity: sha512-pHLrn5uaCgOlFM91k//PkCbsAhbtdiCkg1PtbFP2twBetjMBUQUODGTKXh7Dfhm1CW+T5vUEhaM99WE7nPNUZw==}
@@ -4964,8 +4964,8 @@ packages:
   text-decoder@1.2.7:
     resolution: {integrity: sha512-vlLytXkeP4xvEq2otHeJfSQIRyWxo/oZGEbXrtEEF9Hnmrdly59sUbzZ/QgyWuLYHctCHxFF4tRQZNQ9k60ExQ==}
 
-  three@0.184.0:
-    resolution: {integrity: sha512-wtTRjG92pM5eUg/KuUnHsqSAlPM296brTOcLgMRqEeylYTh/CdtvKUvCyyCQTzFuStieWxvZb8mVTMvdPyUpxg==}
+  three@0.185.1:
+    resolution: {integrity: sha512-5aojFCXKwnjBRZvUnt3WFfEcvUJgkN5LlijRFN95hMy8WVkG4I0QNcJE+OuWvuJ0bOdStrbfXn0pkd6/QyiAlg==}
 
   tiny-inflate@1.0.3:
     resolution: {integrity: sha512-pkY1fj1cKHb2seWDy0B16HeWyczlJA9/WW3u3c4z/NiWDsO3DOU5D7nhTLE9CF0yXv/QZFY7sEJmj24dK+Rrqw==}
@@ -7127,21 +7127,21 @@ snapshots:
       '@parcel/watcher-win32-ia32': 2.5.6
       '@parcel/watcher-win32-x64': 2.5.6
 
-  '@photo-sphere-viewer/core@5.14.3':
+  '@photo-sphere-viewer/core@5.15.0':
     dependencies:
-      three: 0.184.0
+      three: 0.185.1
 
-  '@photo-sphere-viewer/equirectangular-tiles-adapter@5.14.3(@photo-sphere-viewer/core@5.14.3)':
+  '@photo-sphere-viewer/equirectangular-tiles-adapter@5.14.3(@photo-sphere-viewer/core@5.15.0)':
     dependencies:
-      '@photo-sphere-viewer/core': 5.14.3
+      '@photo-sphere-viewer/core': 5.15.0
 
-  '@photo-sphere-viewer/markers-plugin@5.14.3(@photo-sphere-viewer/core@5.14.3)':
+  '@photo-sphere-viewer/markers-plugin@5.14.3(@photo-sphere-viewer/core@5.15.0)':
     dependencies:
-      '@photo-sphere-viewer/core': 5.14.3
+      '@photo-sphere-viewer/core': 5.15.0
 
-  '@photo-sphere-viewer/virtual-tour-plugin@5.14.3(@photo-sphere-viewer/core@5.14.3)':
+  '@photo-sphere-viewer/virtual-tour-plugin@5.14.3(@photo-sphere-viewer/core@5.15.0)':
     dependencies:
-      '@photo-sphere-viewer/core': 5.14.3
+      '@photo-sphere-viewer/core': 5.15.0
 
   '@pkgjs/parseargs@0.11.0':
     optional: true
@@ -10997,7 +10997,7 @@ snapshots:
     transitivePeerDependencies:
       - react-native-b4a
 
-  three@0.184.0: {}
+  three@0.185.1: {}
 
   tiny-inflate@1.0.3: {}
 
