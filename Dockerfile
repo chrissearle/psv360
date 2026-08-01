@@ -7,7 +7,7 @@ ENV NUXT_PUBLIC_IMAGE_TAG=$IMAGE_TAG
 ENV NUXT_PUBLIC_PROMETHEUS_VERBOSE=false
 ENV CI=true
 
-RUN npm install -g pnpm@11.17.0
+RUN npm install -g pnpm@11.18.0
 
 WORKDIR /app
 
