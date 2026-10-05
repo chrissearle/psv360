@@ -46,15 +46,7 @@ useSeoMeta({
 
 <template>
   <div class="max-w-6xl mx-auto px-6 py-10">
-    <UAlert
-      v-if="error"
-      color="error"
-      title="Could not load section"
-      :description="error.message"
-      class="mb-8"
-    />
-
-    <template v-else-if="section">
+    <template v-if="section">
       <h1 class="text-3xl font-bold mb-2">{{ section.name }}</h1>
       <p v-if="section.description" class="text-neutral-400 mb-8">
         {{ section.description }}
