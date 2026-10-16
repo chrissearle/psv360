@@ -103,7 +103,7 @@ Each leaf directory becomes one scene. Its `id` is built from the path relative 
 | --------------------- | ------- | ------------------------------------------------------------------------------------------------- |
 | `id`                  | string  | URL slug (auto-generated) — used in `/pano/<id>` and `/embed/<id>`                                |
 | `name`                | string  | Display name — edit this from the auto-generated leaf-directory name                              |
-| `path`                | string  | Path to the scene directory, relative to `PANO_DIR` (auto-generated)                             |
+| `path`                | string  | Path to the scene directory, relative to `PANO_DIR` (auto-generated)                              |
 | `date`                | string? | `YYYY-MM-DD` — auto-extracted from path; used for ordering and display                            |
 | `tiles`               | object? | Tile metadata written by the generate script; PSV uses this for progressive loading               |
 | `defaultPosition`     | object? | Initial yaw/pitch (radians) when entering this scene; see [Coordinate picker](#coordinate-picker) |

@@ -9,5 +9,9 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 404, message: `Scene not found: ${id}` })
   }
 
-  return sendRedirect(event, `/api/image/${encodeURIComponent(scene.path)}/thumb.jpg`, 302)
+  return sendRedirect(
+    event,
+    `/api/image/${encodeURIComponent(scene.path)}/thumb.jpg`,
+    302,
+  )
 })

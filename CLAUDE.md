@@ -120,10 +120,16 @@ Dark theme by default. `assets/css/main.css` sets CSS variables on `:root` and i
 
 ## Hosting
 
-The site may run at 360.chrissearle.org but this can change. Nothing in the app may reference the hostname — no hardcoded URLs, no canonical link meta, no domain-specific config.
+The site may run at 360.chrissearle.org but this can change. Nothing in the app may reference the hostname — no hardcoded URLs, no canonical link meta, no domain-specific config. That includes site-specific ids such as the Umami website id: they come from the deployment's env.
 
 ## Deployment requirements
 
 - Mount image volume into container
 - Set `PANO_DIR` to the mount path
 - Flux manifests live in a separate repo; do not add k8s/flux config here
+
+## Metrics and analytics
+
+- **Prometheus:** `server/plugins/metrics.ts` serves `/metrics` on its own port (`runtimeConfig.metricsPort`, default 9090, `NUXT_METRICS_PORT`), which only Prometheus reaches; port 3000 answers `/metrics` with a 404. Series: the default `nodejs_*`/`process_*`, `app_build_info{version}` (from `NUXT_PUBLIC_IMAGE_TAG`) and `http_server_request_duration_seconds{method,route_group,status_code}`. `route_group` is a fixed set from `routeGroup()`, never the raw path, so bots probing random URLs can't grow the series count. Each 404 is logged as `[404] <method> <path> from <referer>`. Grafana: the shared "Nuxt Apps" dashboard.
+- **Umami:** `app/plugins/umami.client.ts` fetches `/api/analytics` (`server/api/analytics.get.ts`), which answers with the server's `NUXT_UMAMI_WEBSITE_ID`, `NUXT_UMAMI_DOMAINS` (a JSON array) and `NUXT_UMAMI_SRC`. Without them it answers 204 and no tracker loads; the tracker is also skipped on a host that isn't in the domains. The plugin also sends `error-<status>` events with the path and referrer. The `scripts.registry.umamiAnalytics` entry in `nuxt.config.ts` (`trigger: false, proxy: false, bundle: false`) must stay: without it `@nuxt/scripts` bundles Umami Cloud's script at build time and sends to Umami Cloud.
+- A page that throws a 404 must use `createError({ ..., fatal: true })`, or client-side navigation leaves a blank page and nothing is reported.

@@ -132,7 +132,9 @@ onMounted(() => {
         const pos = defaultPositions.get(e.node.id)
         if (pos) viewer?.rotate(pos)
 
-        markersPlugin.setMarkers(buildMarkers(markersByScene.get(e.node.id) ?? []))
+        markersPlugin.setMarkers(
+          buildMarkers(markersByScene.get(e.node.id) ?? []),
+        )
 
         if (e.data.fromNode) {
           history.pushState(null, "", `/pano/${e.node.id}`)

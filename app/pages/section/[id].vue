@@ -12,7 +12,13 @@ const [{ data: sections, error }, { data: scenes }] = await Promise.all([
 const section = computed(() => sections.value?.find((s) => s.id === id))
 
 if (error.value || (sections.value && !section.value)) {
-  throw createError({ statusCode: 404, message: `Section not found: ${id}` })
+  // Fatal, or client-side navigation leaves a blank page: Nuxt only logs a
+  // non-fatal error thrown during navigation
+  throw createError({
+    statusCode: 404,
+    message: `Section not found: ${id}`,
+    fatal: true,
+  })
 }
 
 const sorted = computed<Scene[]>(() => {

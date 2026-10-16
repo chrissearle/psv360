@@ -7,7 +7,13 @@ const id = route.params.id as string
 const { data: scene, error } = await useFetch<Scene>(`/api/scenes/${id}`)
 
 if (error.value) {
-  throw createError({ statusCode: 404, message: `Scene not found: ${id}` })
+  // Fatal, or client-side navigation leaves a blank page: Nuxt only logs a
+  // non-fatal error thrown during navigation
+  throw createError({
+    statusCode: 404,
+    message: `Scene not found: ${id}`,
+    fatal: true,
+  })
 }
 
 const requestURL = useRequestURL()

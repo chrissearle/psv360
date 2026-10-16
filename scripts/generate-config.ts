@@ -61,8 +61,13 @@ function extractDate(panoDir: string): string | undefined {
   return undefined
 }
 
-function getImageDimensions(imagePath: string): { width: number; height: number } {
-  const out = execSync(`magick identify -format "%wx%h" "${imagePath}"`).toString().trim()
+function getImageDimensions(imagePath: string): {
+  width: number
+  height: number
+} {
+  const out = execSync(`magick identify -format "%wx%h" "${imagePath}"`)
+    .toString()
+    .trim()
   const [w, h] = out.split("x").map(Number)
   if (!w || !h) throw new Error(`Could not read dimensions from ${imagePath}`)
   return { width: w, height: h }
@@ -77,14 +82,14 @@ function generateTiles(dir: string): TileConfig {
   const tileW = Math.ceil(width / COLS)
   const tileH = Math.ceil(height / ROWS)
 
-  console.log(`  Dimensions: ${width}x${height} → ${COLS}×${ROWS} tiles (${tileW}×${tileH}px each)`)
+  console.log(
+    `  Dimensions: ${width}x${height} → ${COLS}×${ROWS} tiles (${tileW}×${tileH}px each)`,
+  )
 
   mkdirSync(tilesDir, { recursive: true })
 
   console.log(`  Generating base.jpg...`)
-  execSync(
-    `magick "${panorama}" -resize ${BASE_WIDTH}x -quality 70 "${base}"`,
-  )
+  execSync(`magick "${panorama}" -resize ${BASE_WIDTH}x -quality 70 "${base}"`)
 
   console.log(`  Generating ${COLS * ROWS} tiles...`)
   execSync(
@@ -149,10 +154,7 @@ for (const dir of findPanoDirs(PANO_DIR)) {
 
 writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2) + "\n")
 
-const changes = [
-  added && `+${added} added`,
-  updated && `${updated} updated`,
-]
+const changes = [added && `+${added} added`, updated && `${updated} updated`]
   .filter(Boolean)
   .join(", ")
 console.log(changes ? `\nWrote ${CONFIG_PATH} (${changes})` : "No changes.")
