@@ -32,7 +32,7 @@
   "devDependencies": {
     "@iconify-json/heroicons": "1.2.3",
     "@nuxt/eslint": "1.17.0",
-    "@types/node": "26.6.7",
+    "@types/node": "26.6.10",
     "eslint": "10.15.0",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-prettier": "5.5.7",
